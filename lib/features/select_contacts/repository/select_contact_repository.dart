@@ -14,7 +14,7 @@ class SelectContactRepository {
   SelectContactRepository({required this.fireStore});
 
   Future<List<Contact>> getContacts() async {
-    List<Contact> contacts = [];
+  List<Contact> contacts = [];
     try {
       if (await FlutterContacts.requestPermission()) {
         contacts = await FlutterContacts.getContacts(withProperties: true);

@@ -1,3 +1,4 @@
+import 'package:chatapp/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +12,8 @@ import './features/landing/screens/landing_screen.dart';
 import './common/widgets/custom_loading_indicator.dart';
 import './common/widgets/error.dart';
 import './features/auth/controller/auth_controller.dart';
+import 'screens/web_layout_screen.dart';
+import 'utils/responsive_layout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,22 +36,19 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(color: appBarColor)),
-      // home: const LandingScreen(),
-      home: ref.watch(userDataAuthProvider).when(
-          data: (user) {
-            if (user == null) {
-              return const LandingScreen();
-            }
-            return const MobileLayoutScreen();
-          },
-          error: (err, trace) {
-            return ErrorScreen(error: err.toString());
-          },
-          loading: () => const CustomLoadinIndicator()),
+      home: const SelectContactScreen(),
+      // home: ref.watch(userDataAuthProvider).when(
+      //     data: (user) {
+      //       if (user == null) {
+      //         return const LandingScreen();
+      //       }
+      //       return const MobileLayoutScreen();
+      //     },
+      //     error: (err, trace) {
+      //       return ErrorScreen(error: err.toString());
+      //     },
+          // loading: () => const CustomLoadinIndicator()),
       onGenerateRoute: (settings) => onGenerateRoute(settings),
     );
-    // home: const ResponsiveLayout(
-    //     mobileScreenLayout: MobileLayoutScreen(),
-    //     webScreenLayout: WebLayoutScreen()));
   }
 }

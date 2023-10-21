@@ -45,6 +45,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
             SizedBox(
               width: size.width * 0.5,
               child: TextField(
+                autofocus: true,
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
                   hintText: "- - - - - -",

@@ -5,7 +5,7 @@ import '../colors.dart';
 
 class MobileLayoutScreen extends StatelessWidget {
   static const routeName = "/mobile-layout";
-  const MobileLayoutScreen({Key? key}) : super(key: key);
+   const MobileLayoutScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

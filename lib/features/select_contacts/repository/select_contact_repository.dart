@@ -14,11 +14,11 @@ class SelectContactRepository {
   SelectContactRepository({required this.fireStore});
 
   Future<List<Contact>> getContacts() async {
-  List<Contact> contacts = [];
+    List<Contact> contacts = [];
     try {
       if (await FlutterContacts.requestPermission()) {
         contacts = await FlutterContacts.getContacts(withProperties: true);
-        print(contacts.length);
+        print("${contacts.length} inside repo");
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -39,7 +39,10 @@ class SelectContactRepository {
         if (selectedPhoneNumber == userData.phoneNumber) {
           isFound = true;
           print("number found");
-          Navigator.pushNamed(context, MobileChatScreen.routeName);
+          Navigator.pushNamed(context, MobileChatScreen.routeName, arguments: {
+            'name': userData.name,
+            'uid': userData.uid,
+          });
         }
       }
       if (!isFound) {

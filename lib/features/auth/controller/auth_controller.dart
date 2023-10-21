@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chatapp/features/auth/repository/auth_repository.dart';
 import 'package:chatapp/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -42,5 +43,9 @@ class AuthController {
   Future<UserModel?> getUserData() async {
     UserModel? user = await authRepository.getCurrentUserData();
     return user;
+  }
+
+  Stream<UserModel> getUserDataById(String userId){
+    return authRepository.userData(userId);
   }
 }

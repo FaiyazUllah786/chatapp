@@ -1,3 +1,5 @@
+import 'package:chatapp/features/auth/screens/login_screen.dart';
+import 'package:chatapp/features/auth/screens/otp_screen.dart';
 import 'package:chatapp/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,18 +38,17 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(color: appBarColor)),
-      home: const SelectContactScreen(),
-      // home: ref.watch(userDataAuthProvider).when(
-      //     data: (user) {
-      //       if (user == null) {
-      //         return const LandingScreen();
-      //       }
-      //       return const MobileLayoutScreen();
-      //     },
-      //     error: (err, trace) {
-      //       return ErrorScreen(error: err.toString());
-      //     },
-          // loading: () => const CustomLoadinIndicator()),
+      home: ref.watch(userDataAuthProvider).when(
+          data: (user) {
+            if (user == null) {
+              return const LandingScreen();
+            }
+            return const MobileLayoutScreen();
+          },
+          error: (err, trace) {
+            return ErrorScreen(error: err.toString());
+          },
+          loading: () => const CustomLoadinIndicator()),
       onGenerateRoute: (settings) => onGenerateRoute(settings),
     );
   }

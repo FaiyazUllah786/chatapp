@@ -10,8 +10,8 @@ void showSnackBar({required BuildContext context, required String content}) {
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(bottom: 15, right: 10, left: 10),
-      padding: EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 15, right: 10, left: 10),
+      padding: const EdgeInsets.all(20),
       backgroundColor: blackColor,
       content: Text(content,
           style: const TextStyle(

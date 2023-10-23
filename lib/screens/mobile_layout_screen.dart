@@ -5,7 +5,7 @@ import '../colors.dart';
 
 class MobileLayoutScreen extends StatelessWidget {
   static const routeName = "/mobile-layout";
-   const MobileLayoutScreen({Key? key}) : super(key: key);
+  const MobileLayoutScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class MobileLayoutScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: const ContactsList(),
+        body: ContactsList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, SelectContactScreen.routeName);

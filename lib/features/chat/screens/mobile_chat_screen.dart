@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../colors.dart';
-import '../../../info.dart';
 import '../../../widgets/chat_list.dart';
 import '../widgets/bottom_chat_field.dart';
 
@@ -22,16 +21,21 @@ class MobileChatScreen extends ConsumerWidget {
         title: StreamBuilder(
           stream: ref.read(authControllerProvider).getUserDataById(uid),
           builder: (context, snapshot) {
-            if(snapshot.connectionState==ConnectionState.waiting){
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const LinearProgressIndicator();
             }
-            return  Column(
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(name),
-                 if(snapshot.hasData) Text(snapshot.data!.isOnline? 'online':'offline',style: TextStyle(fontSize: 14,fontWeight: FontWeight.normal),),
-                ],
-              );
+              children: [
+                Text(name),
+                if (snapshot.hasData)
+                  Text(
+                    snapshot.data!.isOnline ? 'online' : 'offline',
+                    style:
+                        const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                  ),
+              ],
+            );
           },
         ),
         centerTitle: false,
@@ -55,7 +59,7 @@ class MobileChatScreen extends ConsumerWidget {
           const Expanded(
             child: ChatList(),
           ),
-          BottomChatField(),
+          BottomChatField(recieverUserId: uid),
         ],
       ),
     );

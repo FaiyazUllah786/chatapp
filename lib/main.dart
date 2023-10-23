@@ -1,6 +1,3 @@
-import 'package:chatapp/features/auth/screens/login_screen.dart';
-import 'package:chatapp/features/auth/screens/otp_screen.dart';
-import 'package:chatapp/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,8 +11,6 @@ import './features/landing/screens/landing_screen.dart';
 import './common/widgets/custom_loading_indicator.dart';
 import './common/widgets/error.dart';
 import './features/auth/controller/auth_controller.dart';
-import 'screens/web_layout_screen.dart';
-import 'utils/responsive_layout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

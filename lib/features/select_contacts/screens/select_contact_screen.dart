@@ -3,8 +3,6 @@ import 'package:chatapp/colors.dart';
 import 'package:chatapp/common/widgets/custom_loading_indicator.dart';
 import 'package:chatapp/common/widgets/error.dart';
 import 'package:chatapp/features/select_contacts/controller/select_contact_controller.dart';
-import 'package:chatapp/features/select_contacts/repository/select_contact_repository.dart';
-import 'package:chatapp/widgets/contacts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +33,7 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
           IconButton(
               onPressed: () {
               },
-              icon: Icon(Icons.search)),
+              icon: const Icon(Icons.search)),
           PopupMenuButton(
             itemBuilder: (context) {
               return [

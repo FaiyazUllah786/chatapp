@@ -1,11 +1,32 @@
+import 'package:chatapp/features/auth/controller/auth_controller.dart';
 import 'package:chatapp/features/select_contacts/screens/select_contact_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../widgets/contacts_list.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../features/chat/widgets/contacts_list.dart';
 import '../colors.dart';
 
-class MobileLayoutScreen extends StatelessWidget {
+class MobileLayoutScreen extends ConsumerStatefulWidget {
   static const routeName = "/mobile-layout";
   const MobileLayoutScreen({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<MobileLayoutScreen> createState() => _MobileLayoutScreenState();
+}
+
+class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
+    with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        ref.read(authControllerProvider).setUserState(true);
+        break;
+      default:
+        ref.read(authControllerProvider).setUserState(false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

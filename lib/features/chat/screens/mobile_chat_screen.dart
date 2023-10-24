@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../colors.dart';
-import '../../../widgets/chat_list.dart';
+import '../widgets/chat_list.dart';
 import '../widgets/bottom_chat_field.dart';
 
 class MobileChatScreen extends ConsumerWidget {
@@ -31,8 +31,8 @@ class MobileChatScreen extends ConsumerWidget {
                 if (snapshot.hasData)
                   Text(
                     snapshot.data!.isOnline ? 'online' : 'offline',
-                    style:
-                        const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.normal),
                   ),
               ],
             );
@@ -56,8 +56,8 @@ class MobileChatScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          const Expanded(
-            child: ChatList(),
+          Expanded(
+            child: ChatList(recieverUserId: uid),
           ),
           BottomChatField(recieverUserId: uid),
         ],

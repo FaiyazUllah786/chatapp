@@ -36,7 +36,7 @@ class Message {
         senderId: map['senderId'],
         text: map['text'],
         messageType: (map['messageType'] as String).toEnum(),
-        timeSent: map['timeSent'],
+        timeSent: map['timeSent'].toDate(),
         messageId: map['messageId'],
         isSeen: map['isSeen']);
   }

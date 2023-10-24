@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import '../../../widgets/my_message_card.dart';
-import '../../../widgets/sender_message_card.dart';
 import '../../../common/widgets/custom_loading_indicator.dart';
+import 'my_message_card.dart';
+import 'sender_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String recieverUserId;
@@ -61,11 +61,13 @@ class _ChatListState extends ConsumerState<ChatList> {
                 return MyMessageCard(
                   message: messageData.text,
                   date: DateFormat.jm().format(messageData.timeSent).toString(),
+                  type: messageData.messageType,
                 );
               }
               return SenderMessageCard(
                 message: messageData.text,
                 date: DateFormat.jm().format(messageData.timeSent).toString(),
+                type: messageData.messageType,
               );
             },
           );

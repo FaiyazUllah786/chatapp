@@ -8,9 +8,9 @@ import '../widgets/bottom_chat_field.dart';
 
 class MobileChatScreen extends ConsumerWidget {
   static const routeName = '/chat-screen';
-  String name;
-  String uid;
-  MobileChatScreen({Key? key, required this.name, required this.uid})
+  final String name;
+  final String uid;
+  const MobileChatScreen({Key? key, required this.name, required this.uid})
       : super(key: key);
 
   @override

@@ -42,7 +42,7 @@ class _ChatListState extends ConsumerState<ChatList> {
             (a, b) => a.timeSent.compareTo(b.timeSent),
           );
 
-          if (messageList!.isEmpty) {
+          if (messageList.isEmpty) {
             return const Text('No chat contacts available.');
           }
 

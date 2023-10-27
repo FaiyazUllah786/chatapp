@@ -30,13 +30,8 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     }
     setState(() {
       _messageController.clear();
+      _isShowSendButton = false;
     });
-  }
-
-  void sendFileMessage(File file, MessageEnum messageEnum) {
-    ref
-        .read(chatControllerProvider)
-        .sendFileMessage(context, file, widget.recieverUserId, messageEnum);
   }
 
   void _selectImage() async {
@@ -44,6 +39,19 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     if (image != null) {
       sendFileMessage(image, MessageEnum.image);
     }
+  }
+
+  void _selectVideo() async {
+    File? video = await pickVideoFromGallery(context);
+    if (video != null) {
+      sendFileMessage(video, MessageEnum.video);
+    }
+  }
+
+  void sendFileMessage(File file, MessageEnum messageEnum) {
+    ref
+        .read(chatControllerProvider)
+        .sendFileMessage(context, file, widget.recieverUserId, messageEnum);
   }
 
   @override
@@ -90,7 +98,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                         Transform.rotate(
                           angle: 150.0,
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: _selectVideo,
                             icon: const Icon(
                               Icons.attach_file_rounded,
                               color: Colors.grey,
@@ -122,18 +130,28 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 8.0, left: 5, right: 5),
-          child: InkWell(
-            onTap: _sendTextMessage,
-            child: CircleAvatar(
-              backgroundColor: const Color(0xFF128C7E),
-              radius: 25,
+            padding: const EdgeInsets.only(bottom: 5.0, left: 1, right: 1),
+            child: ElevatedButton(
+              onPressed: _sendTextMessage,
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                backgroundColor: tabColor,
+                foregroundColor: whiteColor,
+                minimumSize: const Size.fromRadius(23),
+                alignment: Alignment.center,
+              ),
               child: _isShowSendButton
-                  ? const Icon(Icons.send)
-                  : const Icon(Icons.mic),
-            ),
-          ),
-        )
+                  ? const Icon(
+                      Icons.send,
+                      color: whiteColor,
+                    )
+                  : const Icon(
+                      Icons.mic,
+                      color: whiteColor,
+                    ),
+            )
+            // ),
+            )
       ],
     );
   }

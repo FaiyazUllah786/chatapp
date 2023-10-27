@@ -6,6 +6,9 @@ import 'package:chatapp/features/chat/controller/chat_controller.dart';
 import 'package:chatapp/models/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../colors.dart';
 
@@ -20,18 +23,52 @@ class BottomChatField extends ConsumerStatefulWidget {
 
 class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   bool _isShowSendButton = false;
+  bool _isRecorderInit = false;
+  bool _isRecording = false;
   final _messageController = TextEditingController();
+  FlutterSoundRecorder? _soundRecorder;
+
+  @override
+  void initState() {
+    super.initState();
+    _soundRecorder = FlutterSoundRecorder();
+    openAudio();
+  }
+
+  void openAudio() async {
+    final status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Mic Permission not allowed.');
+    }
+    await _soundRecorder!.openRecorder();
+    _isRecorderInit = true;
+  }
 
   void _sendTextMessage() async {
     if (_isShowSendButton) {
       ref.read(chatControllerProvider).sendTextMessage(
           context, _messageController.text.trim(), widget.recieverUserId);
       print('message sent!! ${widget.recieverUserId}');
+      setState(() {
+        _messageController.clear();
+        _isShowSendButton = false;
+      });
+    } else {
+      //mic button is showing
+
+      var tempDir = await getTemporaryDirectory();
+      var path = '${tempDir.path}/flutter_sound.aac';
+      if (!_isRecorderInit) return;
+      if (_isRecording) {
+        await _soundRecorder!.stopRecorder();
+        sendFileMessage(File(path), MessageEnum.audio);
+      } else {
+        await _soundRecorder!.startRecorder(toFile: path);
+      }
+      setState(() {
+        _isRecording = !_isRecording;
+      });
     }
-    setState(() {
-      _messageController.clear();
-      _isShowSendButton = false;
-    });
   }
 
   void _selectImage() async {
@@ -58,6 +95,8 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   void dispose() {
     super.dispose();
     _messageController.dispose();
+    _soundRecorder!.closeRecorder();
+    _isRecorderInit = false;
   }
 
   @override
@@ -132,24 +171,23 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
         Padding(
             padding: const EdgeInsets.only(bottom: 5.0, left: 1, right: 1),
             child: ElevatedButton(
-              onPressed: _sendTextMessage,
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                backgroundColor: tabColor,
-                foregroundColor: whiteColor,
-                minimumSize: const Size.fromRadius(23),
-                alignment: Alignment.center,
-              ),
-              child: _isShowSendButton
-                  ? const Icon(
-                      Icons.send,
-                      color: whiteColor,
-                    )
-                  : const Icon(
-                      Icons.mic,
-                      color: whiteColor,
-                    ),
-            )
+                onPressed: _sendTextMessage,
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  backgroundColor: tabColor,
+                  foregroundColor: whiteColor,
+                  minimumSize: const Size.fromRadius(23),
+                  alignment: Alignment.center,
+                ),
+                child: _isShowSendButton
+                    ? const Icon(
+                        Icons.send,
+                        color: whiteColor,
+                      )
+                    : Icon(
+                        _isRecording ? Icons.close : Icons.mic,
+                        color: whiteColor,
+                      ))
             // ),
             )
       ],

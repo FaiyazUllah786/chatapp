@@ -51,6 +51,9 @@ dependencies:
   video_player: ^2.7.2
   chewie: ^1.7.1
   flutter_sound: ^9.2.13
+  path_provider: ^2.1.1
+  permission_handler: ^11.0.1
+  audioplayers: ^5.2.0
 
 dev_dependencies:
   flutter_test:

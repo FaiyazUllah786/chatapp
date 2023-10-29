@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:chatapp/common/message_enum.dart';
+import 'package:chatapp/common/provider/message_reply_provider.dart';
 import 'package:chatapp/common/utils/utils.dart';
 import 'package:chatapp/features/chat/controller/chat_controller.dart';
-import 'package:chatapp/models/message.dart';
+import 'package:chatapp/features/chat/widgets/message_reply_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -101,95 +102,107 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    final messageReply = ref.watch(messageReplyProvider);
+    final isShowMessageReply = messageReply != null;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: TextFormField(
-            controller: _messageController,
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                setState(() {
-                  _isShowSendButton = true;
-                });
-              } else {
-                setState(() {
-                  _isShowSendButton = false;
-                });
-              }
-            },
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: mobileChatBoxColor,
-              prefixIcon: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.emoji_emotions,
-                  color: Colors.grey,
-                ),
-              ),
-              suffixIcon: SizedBox(
-                width: 100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Stack(
-                      children: [
-                        Transform.rotate(
-                          angle: 150.0,
-                          child: IconButton(
-                            onPressed: _selectVideo,
-                            icon: const Icon(
-                              Icons.attach_file_rounded,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: _selectImage,
+        isShowMessageReply ? const MessageReplyPreview() : const SizedBox(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: _messageController,
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      setState(() {
+                        _isShowSendButton = true;
+                      });
+                    } else {
+                      setState(() {
+                        _isShowSendButton = false;
+                      });
+                    }
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: mobileChatBoxColor,
+                    prefixIcon: IconButton(
+                      onPressed: () {},
                       icon: const Icon(
-                        Icons.camera_alt,
+                        Icons.emoji_emotions,
                         color: Colors.grey,
                       ),
                     ),
-                  ],
+                    suffixIcon: SizedBox(
+                      width: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Stack(
+                            children: [
+                              Transform.rotate(
+                                angle: 150.0,
+                                child: IconButton(
+                                  onPressed: _selectVideo,
+                                  icon: const Icon(
+                                    Icons.attach_file_rounded,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            onPressed: _selectImage,
+                            icon: const Icon(
+                              Icons.camera_alt,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    hintText: 'Message',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: const BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.all(10),
+                  ),
                 ),
               ),
-              hintText: 'Message',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: const BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
-                ),
-              ),
-              contentPadding: const EdgeInsets.all(10),
-            ),
+              Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 5.0, left: 1, right: 1),
+                  child: ElevatedButton(
+                      onPressed: _sendTextMessage,
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor: tabColor,
+                        foregroundColor: whiteColor,
+                        minimumSize: const Size.fromRadius(23),
+                        alignment: Alignment.center,
+                      ),
+                      child: _isShowSendButton
+                          ? const Icon(
+                              Icons.send,
+                              color: whiteColor,
+                            )
+                          : Icon(
+                              _isRecording ? Icons.close : Icons.mic,
+                              color: whiteColor,
+                            ))
+                  // ),
+                  )
+            ],
           ),
         ),
-        Padding(
-            padding: const EdgeInsets.only(bottom: 5.0, left: 1, right: 1),
-            child: ElevatedButton(
-                onPressed: _sendTextMessage,
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  backgroundColor: tabColor,
-                  foregroundColor: whiteColor,
-                  minimumSize: const Size.fromRadius(23),
-                  alignment: Alignment.center,
-                ),
-                child: _isShowSendButton
-                    ? const Icon(
-                        Icons.send,
-                        color: whiteColor,
-                      )
-                    : Icon(
-                        _isRecording ? Icons.close : Icons.mic,
-                        color: whiteColor,
-                      ))
-            // ),
-            )
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/common/message_enum.dart';
 import 'package:chatapp/common/utils/utils.dart';
+import 'package:chatapp/common/widgets/custom_loading_indicator.dart';
 import 'package:chatapp/features/chat/widgets/video_player_item.dart';
 import 'package:flutter/material.dart';
 

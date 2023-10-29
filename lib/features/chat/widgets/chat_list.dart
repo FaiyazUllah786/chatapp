@@ -1,3 +1,5 @@
+import 'package:chatapp/common/message_enum.dart';
+import 'package:chatapp/common/provider/message_reply_provider.dart';
 import 'package:chatapp/features/chat/controller/chat_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,14 @@ class _ChatListState extends ConsumerState<ChatList> {
     messageController.dispose();
   }
 
+  void onMessageSwipe(
+      {required String message,
+      required bool isMe,
+      required MessageEnum messageType}) {
+    ref.read(messageReplyProvider.notifier).update((state) =>
+        MessageReply(message: message, isMe: isMe, messageEnum: messageType));
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -43,7 +53,11 @@ class _ChatListState extends ConsumerState<ChatList> {
           );
 
           if (messageList.isEmpty) {
-            return const Text('No chat contacts available.');
+            return Center(
+                child: const Text(
+              'No chat contacts available.',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+            ));
           }
 
           SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -56,18 +70,42 @@ class _ChatListState extends ConsumerState<ChatList> {
             itemCount: messageList.length,
             itemBuilder: (context, index) {
               final messageData = messageList[index];
+              if ((!messageData.isSeen) &&
+                  (messageData.recieverId ==
+                      FirebaseAuth.instance.currentUser!.uid)) {
+                ref.read(chatControllerProvider).setChatMessageSeen(
+                    context, messageData.recieverId, messageData.messageId);
+              }
               if (messageData.senderId ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 return MyMessageCard(
-                  message: messageData.text,
-                  date: DateFormat.jm().format(messageData.timeSent).toString(),
-                  type: messageData.messageType,
-                );
+                    message: messageData.text,
+                    date:
+                        DateFormat.jm().format(messageData.timeSent).toString(),
+                    type: messageData.messageType,
+                    repliedText: messageData.repliedMessage,
+                    userName: messageData.repliedTo,
+                    repliedMessageType: messageData.repliedMessageType,
+                    onLeftSwipe: () => onMessageSwipe(
+                          message: messageData.text,
+                          isMe: true,
+                          messageType: messageData.messageType,
+                        ),
+                    isSeen: messageData.isSeen);
               }
               return SenderMessageCard(
                 message: messageData.text,
                 date: DateFormat.jm().format(messageData.timeSent).toString(),
                 type: messageData.messageType,
+                repliedText: messageData.repliedMessage,
+                userName: messageData.repliedTo,
+                repliedMessageType: messageData.repliedMessageType,
+                onRightSwipe: () => onMessageSwipe(
+                  message: messageData.text,
+                  isMe: false,
+                  messageType: messageData.messageType,
+                ),
+                isSeen: messageData.isSeen,
               );
             },
           );

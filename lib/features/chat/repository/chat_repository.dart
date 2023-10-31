@@ -261,24 +261,24 @@ class ChatRepository {
 
   void setChatMessageSeen(
     BuildContext context,
-    String recieverUserId,
+    String senderId,
     String messageId,
   ) async {
     try {
-      print("sender:${auth.currentUser!.uid},reciever: ${recieverUserId}");
+      print("sender:${auth.currentUser!.uid},reciever: ${senderId}");
       await firestore
           .collection('users')
           .doc(auth.currentUser!.uid)
           .collection('chats')
-          .doc(recieverUserId)
+          .doc(senderId)
           .collection('messages')
           .doc(messageId)
           .update({'isSeen': true});
 
-      print("sender:${auth.currentUser!.uid},reciever: ${recieverUserId}");
+      print("sender:${auth.currentUser!.uid},reciever: ${senderId}");
       await firestore
           .collection('users')
-          .doc(recieverUserId)
+          .doc(senderId)
           .collection('chats')
           .doc(auth.currentUser!.uid)
           .collection('messages')

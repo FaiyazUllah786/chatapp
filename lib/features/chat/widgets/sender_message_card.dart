@@ -15,8 +15,7 @@ class SenderMessageCard extends StatelessWidget {
       required this.onRightSwipe,
       required this.repliedText,
       required this.userName,
-      required this.repliedMessageType,
-      required this.isSeen})
+      required this.repliedMessageType})
       : super(key: key);
   final String message;
   final String date;
@@ -25,7 +24,6 @@ class SenderMessageCard extends StatelessWidget {
   final String repliedText;
   final String userName;
   final MessageEnum repliedMessageType;
-  final bool isSeen;
 
   @override
   Widget build(BuildContext context) {
@@ -81,24 +79,12 @@ class SenderMessageCard extends StatelessWidget {
                 Positioned(
                   bottom: 4,
                   right: 10,
-                  child: Row(
-                    children: [
-                      Text(
-                        date,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.white60,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Icon(
-                        isSeen ? Icons.done_all : Icons.done,
-                        size: 20,
-                        color: isSeen ? Colors.blue : Colors.white60,
-                      ),
-                    ],
+                  child: Text(
+                    date,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.white60,
+                    ),
                   ),
                 ),
               ],

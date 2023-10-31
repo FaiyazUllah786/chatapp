@@ -74,7 +74,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                   (messageData.recieverId ==
                       FirebaseAuth.instance.currentUser!.uid)) {
                 ref.read(chatControllerProvider).setChatMessageSeen(
-                    context, messageData.recieverId, messageData.messageId);
+                    context, messageData.senderId, messageData.messageId);
               }
               if (messageData.senderId ==
                   FirebaseAuth.instance.currentUser!.uid) {
@@ -105,7 +105,6 @@ class _ChatListState extends ConsumerState<ChatList> {
                   isMe: false,
                   messageType: messageData.messageType,
                 ),
-                isSeen: messageData.isSeen,
               );
             },
           );

@@ -9,6 +9,8 @@ import '../../../colors.dart';
 import '../screens/mobile_chat_screen.dart';
 
 class ContactsList extends ConsumerWidget {
+  const ContactsList({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return StreamBuilder<List<ChatContact>>(
@@ -22,7 +24,7 @@ class ContactsList extends ConsumerWidget {
           final chatContacts = snapshot.data;
 
           if (chatContacts!.isEmpty) {
-            return Text('No chat contacts available.');
+            return const Text('No chat contacts available.');
           }
 
           return ListView.builder(

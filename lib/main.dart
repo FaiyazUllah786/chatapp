@@ -31,6 +31,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: "ChatApp",
       theme: ThemeData.dark().copyWith(
+          // useMaterial3: true,
           scaffoldBackgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(color: appBarColor)),
       home: ref.watch(userDataAuthProvider).when(

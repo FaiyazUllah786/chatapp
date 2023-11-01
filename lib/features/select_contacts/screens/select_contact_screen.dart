@@ -40,6 +40,13 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
     loadContacts();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    searchController.dispose();
+    searchFocus.dispose();
+  }
+
   bool _isLoading = false;
   bool _isSearchOpen = false;
   Future<void> loadContacts() async {

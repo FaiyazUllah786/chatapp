@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final getContactsProvider = FutureProvider((ref) async{
+final getContactsProvider = FutureProvider((ref) async {
   return await ref.watch(selectContactRepositoryProvider).getContacts();
 });
 
@@ -25,5 +25,9 @@ class SelectContactController {
   void selectContact(Contact selectedContact, BuildContext context) {
     selectContactRepository.selectContact(
         selectedContact: selectedContact, context: context);
+  }
+
+  Future<List<Contact>> getChatContacts() async {
+    return await selectContactRepository.getContacts();
   }
 }

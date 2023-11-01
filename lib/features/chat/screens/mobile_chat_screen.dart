@@ -1,4 +1,6 @@
 import 'package:chatapp/features/auth/controller/auth_controller.dart';
+import 'package:chatapp/features/chat/widgets/contacts_list.dart';
+import 'package:chatapp/screens/mobile_layout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,6 +19,12 @@ class MobileChatScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+              context, MobileLayoutScreen.routeName, (route) => false),
+        ),
         backgroundColor: appBarColor,
         title: StreamBuilder(
           stream: ref.read(authControllerProvider).getUserDataById(uid),

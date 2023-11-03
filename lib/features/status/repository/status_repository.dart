@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:chatapp/common/repository/common_firebase_storage_repository.dart';
 import 'package:chatapp/common/utils/utils.dart';
 import 'package:chatapp/models/status.dart';
+import 'package:chatapp/models/user_model.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,16 +28,19 @@ class StatusRepository {
     required this.ref,
   });
 
-  void uploadStatus({
-    required String userName,
-    required String phoneNumber,
-    required String profilePic,
+  Future<void> uploadStatus({
+    // required String userName,
+    // required String phoneNumber,
+    // required String profilePic,
     required File statusImage,
     required BuildContext context,
   }) async {
     try {
       String statusId = const Uuid().v1();
       String uid = auth.currentUser!.uid;
+
+      var userDataMap = await firestore.collection('users').doc(uid).get();
+      UserModel userModel = UserModel.fromMap(userDataMap.data()!);
       //uploading status to firebase storage
       String imageUrl = await ref
           .read(commonFirebaseStorageRepositoryProvider)
@@ -95,11 +100,14 @@ class StatusRepository {
       }
 
       //creating status model to upload it to firebase database
+      print("in repository");
+      print(
+          '${userModel.name},${userModel.phoneNumber},${userModel.profilePic}');
       Status status = Status(
           uid: uid,
-          userName: userName,
-          phoneNumber: phoneNumber,
-          profilePic: profilePic,
+          userName: userModel.name,
+          phoneNumber: userModel.phoneNumber,
+          profilePic: userModel.profilePic,
           photoUrl: statusImageUrl,
           createdAt: DateTime.now(),
           statusId: statusId,
@@ -129,5 +137,42 @@ class StatusRepository {
       showSnackBar(context: context, content: e.toString());
     }
     return status;
+  }
+
+  // Import the async library
+
+  Stream<List<Status>> getStatusStream(BuildContext context) {
+    // Create a StreamController to manage the stream
+    StreamController<List<Status>> controller = StreamController();
+
+    void updateStatusList() async {
+      List<Status> status = [];
+      try {
+        var statusesSnapshot = await firestore
+            .collection('status')
+            .where('whoCanSee', arrayContains: auth.currentUser!.uid)
+            .snapshots();
+
+        statusesSnapshot.listen((querySnapshot) {
+          status.clear();
+          for (var document in querySnapshot.docs) {
+            var statusData = Status.fromMap(document.data());
+            status.add(statusData);
+          }
+          // Add the updated list of statuses to the stream
+          controller.add(status);
+        });
+      } catch (e) {
+        // Handle errors, such as showing a snackbar
+        // You can replace this part with your error handling logic
+        showSnackBar(context: context, content: e.toString());
+      }
+    }
+
+    // Call the function to start listening for updates
+    updateStatusList();
+
+    // Return the stream from the StreamController
+    return controller.stream;
   }
 }

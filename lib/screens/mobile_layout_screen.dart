@@ -25,6 +25,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    tabController.addListener(_changeFabICon);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -32,6 +33,8 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    tabController.removeListener(_changeFabICon);
+    tabController.dispose();
   }
 
   @override
@@ -43,6 +46,24 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
         break;
       default:
         ref.read(authControllerProvider).setUserState(false);
+    }
+  }
+
+  IconData _fabICon = Icons.comment;
+  void _changeFabICon() {
+    print(tabController.index);
+    if (tabController.index == 0) {
+      setState(() {
+        _fabICon = Icons.comment;
+      });
+    } else if (tabController.index == 1) {
+      setState(() {
+        _fabICon = Icons.add;
+      });
+    } else {
+      setState(() {
+        _fabICon = Icons.add_call;
+      });
     }
   }
 
@@ -117,7 +138,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
           },
           backgroundColor: tabColor,
           child: Icon(
-            Icons.comment,
+            _fabICon,
             color: Colors.white,
           ),
         ),

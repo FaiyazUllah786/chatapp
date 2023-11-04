@@ -44,36 +44,35 @@ class ContactsList extends ConsumerWidget {
                             'uid': chatContactData.contactId
                           });
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: ListTile(
-                        title: Text(
-                          chatContactData.name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
+                    child: ListTile(
+                      title: Text(
+                        chatContactData.name,
+                        style: const TextStyle(
+                          fontSize: 18,
                         ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 6.0),
-                          child: Text(
-                            chatContactData.lastMessage,
-                            style: const TextStyle(fontSize: 15),
-                          ),
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: Text(
+                          chatContactData.lastMessage,
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          style: const TextStyle(fontSize: 15),
                         ),
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            chatContactData.profilePic,
-                          ),
-                          radius: 24,
+                      ),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          chatContactData.profilePic,
                         ),
-                        trailing: Text(
-                          DateFormat.jm()
-                              .format(chatContactData.timeSent)
-                              .toString(),
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13,
-                          ),
+                        radius: 24,
+                      ),
+                      trailing: Text(
+                        DateFormat.jm()
+                            .format(chatContactData.timeSent)
+                            .toString(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13,
                         ),
                       ),
                     ),

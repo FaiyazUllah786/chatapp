@@ -39,9 +39,25 @@ class AuthController {
         name: name, profilePic: profilePic, ref: ref, context: context);
   }
 
+  Future<void> updateUserProfilePicToFirestore(
+      {required BuildContext context, required File? profilePic}) async {
+    await authRepository.updateUserProfilePicToFirestore(
+        profilePic: profilePic, ref: ref, context: context);
+  }
+
+  Future<void> updateUserNameToFirestore(
+      {required BuildContext context, required String name}) async {
+    await authRepository.updateUserNameToFirestore(
+        name: name, ref: ref, context: context);
+  }
+
   Future<UserModel?> getUserData() async {
     UserModel? user = await authRepository.getCurrentUserData();
     return user;
+  }
+
+  Stream<UserModel?> getCurrentUserData() {
+    return authRepository.getCurrentUserDataStream();
   }
 
   Stream<UserModel> getUserDataById(String userId) {

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:chatapp/common/utils/utils.dart';
 import 'package:chatapp/features/auth/controller/auth_controller.dart';
+import 'package:chatapp/features/auth/screens/account_info_screen.dart';
+import 'package:chatapp/features/auth/screens/userInformation_screen.dart';
 import 'package:chatapp/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:chatapp/features/status/screens/confirm_status_screen.dart';
 import 'package:chatapp/features/status/screens/status_contact_screen.dart';
@@ -58,7 +60,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
       });
     } else if (tabController.index == 1) {
       setState(() {
-        _fabICon = Icons.add;
+        _fabICon = Icons.camera_alt;
       });
     } else {
       setState(() {
@@ -89,9 +91,23 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
               icon: const Icon(Icons.search, color: Colors.grey),
               onPressed: () {},
             ),
-            IconButton(
-              icon: const Icon(Icons.more_vert, color: Colors.grey),
-              onPressed: () {},
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: PopupMenuButton(
+                color: backgroundColor,
+                child: const Icon(Icons.more_vert_rounded),
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                        child: Text('Account'),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AccountInfoScreen(),
+                            )))
+                  ];
+                },
+              ),
             ),
           ],
           bottom: TabBar(

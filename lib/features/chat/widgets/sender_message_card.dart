@@ -63,6 +63,7 @@ class SenderMessageCard extends StatelessWidget {
                     children: [
                       if (isReplying) ...[
                         Text(userName),
+                        SizedBox(height: 5),
                         Container(
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -71,6 +72,7 @@ class SenderMessageCard extends StatelessWidget {
                           child: DisplayTextFile(
                               message: repliedText, type: repliedMessageType),
                         ),
+                        SizedBox(height: 5),
                       ],
                       DisplayTextFile(message: message, type: type),
                     ],

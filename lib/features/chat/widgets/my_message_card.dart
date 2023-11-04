@@ -61,13 +61,16 @@ class MyMessageCard extends StatelessWidget {
                           bottom: 30,
                         ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (isReplying) ...[
                         Text(
                           userName,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
+                        const SizedBox(height: 5),
                         Container(
+                          // width: MediaQuery.of(context).size.width / 3,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               color: backgroundColor.withOpacity(0.5),
@@ -75,6 +78,7 @@ class MyMessageCard extends StatelessWidget {
                           child: DisplayTextFile(
                               message: repliedText, type: repliedMessageType),
                         ),
+                        const SizedBox(height: 5)
                       ],
                       DisplayTextFile(message: message, type: type),
                     ],

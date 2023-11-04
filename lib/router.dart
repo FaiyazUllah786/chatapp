@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chatapp/features/auth/screens/account_info_screen.dart';
 import 'package:chatapp/features/auth/screens/otp_screen.dart';
 import 'package:chatapp/features/auth/screens/userInformation_screen.dart';
 import 'package:chatapp/features/select_contacts/screens/select_contact_screen.dart';
@@ -23,6 +24,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case UserInformationScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => const UserInformationScreen());
+    case AccountInfoScreen.routeName:
+      return MaterialPageRoute(builder: (context) => AccountInfoScreen());
     case MobileLayoutScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => const MobileLayoutScreen());

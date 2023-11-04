@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chatapp/common/repository/common_firebase_storage_repository.dart';
+import 'package:chatapp/features/auth/screens/account_info_screen.dart';
 import 'package:chatapp/features/auth/screens/userInformation_screen.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/mobile_layout_screen.dart';
@@ -95,6 +96,40 @@ class AuthRepository {
     }
   }
 
+  Future<void> updateUserProfilePicToFirestore(
+      {required File? profilePic,
+      required ProviderRef ref,
+      required BuildContext context}) async {
+    try {
+      final uid = auth.currentUser!.uid;
+      if (profilePic != null) {
+        String photoUrl = await ref
+            .read(commonFirebaseStorageRepositoryProvider)
+            .storeFileToFirebase(ref: "profilePic/$uid", file: profilePic);
+        await firestore
+            .collection('users')
+            .doc(uid)
+            .update({'profilePic': photoUrl});
+      }
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
+
+  Future<void> updateUserNameToFirestore(
+      {required String name,
+      required ProviderRef ref,
+      required BuildContext context}) async {
+    try {
+      final uid = auth.currentUser!.uid;
+      if (name.isNotEmpty) {
+        await firestore.collection('users').doc(uid).update({'name': name});
+      }
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
+
   Future<UserModel?> getCurrentUserData() async {
     final userData =
         await firestore.collection('users').doc(auth.currentUser?.uid).get();
@@ -103,6 +138,16 @@ class AuthRepository {
       user = UserModel.fromMap(userData.data()!);
     }
     return user;
+  }
+
+  Stream<UserModel?> getCurrentUserDataStream() {
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .snapshots()
+        .map((event) {
+      return UserModel.fromMap(event.data()!);
+    });
   }
 
   Stream<UserModel> userData(String userId) {

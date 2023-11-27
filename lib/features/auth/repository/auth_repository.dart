@@ -82,6 +82,7 @@ class AuthRepository {
           uid: uid,
           profilePic: photoUrl,
           isOnline: true,
+          lastSeen: DateTime.now(),
           phoneNumber: auth.currentUser!.phoneNumber!,
           groupId: []);
       await firestore.collection('users').doc(uid).set(user.toMap());
@@ -159,8 +160,9 @@ class AuthRepository {
   }
 
   void setUserState(bool isOnline) async {
-    await firestore.collection('users').doc(auth.currentUser!.uid).update({
-      'isOnline': isOnline,
-    });
+    await firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .update({'isOnline': isOnline, 'lastSeen': DateTime.now()});
   }
 }

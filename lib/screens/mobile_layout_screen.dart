@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:chatapp/common/utils/utils.dart';
 import 'package:chatapp/features/auth/controller/auth_controller.dart';
 import 'package:chatapp/features/auth/screens/account_info_screen.dart';
-import 'package:chatapp/features/auth/screens/userInformation_screen.dart';
+import 'package:chatapp/features/group/screens/create_group_screen.dart';
 import 'package:chatapp/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:chatapp/features/status/screens/confirm_status_screen.dart';
-import 'package:chatapp/features/status/screens/status_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/chat/widgets/contacts_list.dart';
 import '../colors.dart';
+import '../features/status/screens/status_contact_screen.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
   static const routeName = "/mobile-layout";
@@ -99,12 +99,17 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
-                        child: Text('Account'),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountInfoScreen(),
-                            )))
+                      child: const Text('Account'),
+                      onTap: () => Navigator.pushNamed(
+                          context, AccountInfoScreen.routeName),
+                    ),
+                    PopupMenuItem(
+                      child: const Text('Create Group'),
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, CreateGroupScreen.routeName);
+                      },
+                    )
                   ];
                 },
               ),
@@ -112,9 +117,9 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
           ],
           bottom: TabBar(
             controller: tabController,
-            indicatorColor: tabColor,
+            indicatorColor: whiteColor,
             indicatorWeight: 4,
-            labelColor: tabColor,
+            labelColor: whiteColor,
             unselectedLabelColor: Colors.grey,
             labelStyle: const TextStyle(
               fontWeight: FontWeight.bold,
@@ -140,6 +145,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
             Text('Snow'),
           ],
         ),
+        // body: const ContactsList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             if (tabController.index == 0) {

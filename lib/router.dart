@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:chatapp/features/auth/screens/account_info_screen.dart';
 import 'package:chatapp/features/auth/screens/otp_screen.dart';
 import 'package:chatapp/features/auth/screens/userInformation_screen.dart';
+import 'package:chatapp/features/chat/screens/reciever_info.dart';
+import 'package:chatapp/features/group/screens/create_group_screen.dart';
 import 'package:chatapp/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:chatapp/features/chat/screens/mobile_chat_screen.dart';
 import 'package:chatapp/features/status/screens/confirm_status_screen.dart';
@@ -25,7 +27,16 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => const UserInformationScreen());
     case AccountInfoScreen.routeName:
-      return MaterialPageRoute(builder: (context) => AccountInfoScreen());
+      return MaterialPageRoute(builder: (context) => const AccountInfoScreen());
+    case CreateGroupScreen.routeName:
+      return MaterialPageRoute(builder: (context) => const CreateGroupScreen());
+    case RecieverInfo.routeName:
+      final arguments = settings.arguments as Map<String, dynamic>;
+      final user = arguments['usermodel'];
+      return MaterialPageRoute(
+          builder: (context) => RecieverInfo(
+                reciever: user,
+              ));
     case MobileLayoutScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => const MobileLayoutScreen());
@@ -36,8 +47,14 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       final arguments = settings.arguments as Map<String, dynamic>;
       final name = arguments['name'];
       final uid = arguments['uid'];
+      final isGroupChat = arguments['isGroupChat'];
+      final profilePic = arguments['profilePic'];
       return MaterialPageRoute(
-          builder: (context) => MobileChatScreen(name: name, uid: uid));
+          builder: (context) => MobileChatScreen(
+              name: name,
+              uid: uid,
+              profilePic: profilePic,
+              isGroupChat: isGroupChat));
     case ConfirmStatusScreen.routeName:
       final file = settings.arguments as File;
       return MaterialPageRoute(

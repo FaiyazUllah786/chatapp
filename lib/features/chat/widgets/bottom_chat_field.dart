@@ -15,7 +15,9 @@ import '../../../colors.dart';
 
 class BottomChatField extends ConsumerStatefulWidget {
   final String recieverUserId;
-  const BottomChatField({super.key, required this.recieverUserId});
+  final bool isGroupChat;
+  const BottomChatField(
+      {super.key, required this.recieverUserId, required this.isGroupChat});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -48,7 +50,10 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   void _sendTextMessage() async {
     if (_isShowSendButton) {
       ref.read(chatControllerProvider).sendTextMessage(
-          context, _messageController.text.trim(), widget.recieverUserId);
+          context,
+          _messageController.text.trim(),
+          widget.recieverUserId,
+          widget.isGroupChat);
       print('message sent!! ${widget.recieverUserId}');
       setState(() {
         _messageController.clear();
@@ -87,9 +92,8 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   }
 
   void sendFileMessage(File file, MessageEnum messageEnum) {
-    ref
-        .read(chatControllerProvider)
-        .sendFileMessage(context, file, widget.recieverUserId, messageEnum);
+    ref.read(chatControllerProvider).sendFileMessage(
+        context, file, widget.recieverUserId, messageEnum, widget.isGroupChat);
   }
 
   @override

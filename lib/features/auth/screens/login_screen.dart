@@ -70,6 +70,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text("Enter Your Mobile Number"),
         elevation: 0,
@@ -95,7 +96,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             const SizedBox(height: 10),
             Row(
               children: [
-                if (_country != null) Text("+${_country!.phoneCode}"),
+                _country != null
+                    ? Container(
+                        decoration: BoxDecoration(
+                            color: tabColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(child: Text("+${_country!.phoneCode}")),
+                        ))
+                    : Container(
+                        decoration: BoxDecoration(
+                            color: tabColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: 40,
+                        child: const Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                              child: Text(
+                            '000',
+                            style: TextStyle(fontSize: 16),
+                          )),
+                        )),
                 const SizedBox(width: 10),
                 SizedBox(
                   width: size.width * 0.7,

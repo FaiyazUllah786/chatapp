@@ -2,6 +2,7 @@ import 'package:chatapp/colors.dart';
 import 'package:chatapp/common/utils/utils.dart';
 
 import 'package:chatapp/common/widgets/custom_loading_indicator.dart';
+import 'package:chatapp/common/widgets/glassmorphism.dart';
 import 'package:chatapp/features/select_contacts/controller/select_contact_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -82,6 +83,7 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
               onPressed: () {
                 setState(() {
                   _isSearchOpen = !_isSearchOpen;
+                  query = '';
                 });
                 _isSearchOpen
                     ? searchFocus.requestFocus()
@@ -159,32 +161,45 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
                     ),
                   ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: filteredContacts.length,
-                    itemBuilder: (context, index) {
-                      final contact = filteredContacts[index];
-                      return InkWell(
-                        onTap: () => selectContact(ref, contact, context),
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: ListTile(
-                            title: Text(contact.displayName),
-                            leading: contact.photo == null
-                                ? const CircleAvatar(
-                                    backgroundColor: whiteColor,
-                                    child: Icon(
-                                      Icons.person,
-                                    ),
-                                  )
-                                : CircleAvatar(
-                                    backgroundImage:
-                                        MemoryImage(contact.photo!),
-                                    radius: 30,
+                  child: Scrollbar(
+                    child: ListView.builder(
+                      itemCount: filteredContacts.length,
+                      itemBuilder: (context, index) {
+                        final contact = filteredContacts[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, right: 8.0, top: 8.0),
+                          child: InkWell(
+                            onTap: () => selectContact(ref, contact, context),
+                            child: GlassMorphism(
+                              start: 0.2,
+                              end: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: ListTile(
+                                  title: Text(
+                                    contact.displayName,
+                                    style: TextStyle(fontSize: 16),
                                   ),
+                                  leading: contact.photo == null
+                                      ? const CircleAvatar(
+                                          // backgroundColor: whiteColor,
+                                          child: Icon(
+                                            Icons.person,
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundImage:
+                                              MemoryImage(contact.photo!),
+                                          radius: 30,
+                                        ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],

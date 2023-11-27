@@ -1,9 +1,9 @@
-
 class UserModel {
   final String name;
   final String uid;
   final String profilePic;
   final bool isOnline;
+  final DateTime lastSeen;
   final String phoneNumber;
   final List<dynamic> groupId;
 
@@ -12,6 +12,7 @@ class UserModel {
       required this.uid,
       required this.profilePic,
       required this.isOnline,
+      required this.lastSeen,
       required this.phoneNumber,
       required this.groupId});
 
@@ -21,6 +22,7 @@ class UserModel {
       "uid": uid,
       "profilePic": profilePic,
       "isOnline": isOnline,
+      'lastSeen': lastSeen,
       "phoneNumber": phoneNumber,
       "groupId": groupId
     };
@@ -32,6 +34,7 @@ class UserModel {
         uid: map['uid'],
         profilePic: map['profilePic'],
         isOnline: map['isOnline'],
+        lastSeen: map['lastSeen'].toDate(),
         phoneNumber: map['phoneNumber'],
         groupId: map['groupId']);
   }

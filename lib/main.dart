@@ -1,3 +1,4 @@
+import 'package:chatapp/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,7 +6,6 @@ import 'firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'colors.dart';
-import './router.dart';
 import './screens/mobile_layout_screen.dart';
 import './features/landing/screens/landing_screen.dart';
 import './common/widgets/custom_loading_indicator.dart';
@@ -31,7 +31,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: "ChatApp",
       theme: ThemeData.dark().copyWith(
-          // useMaterial3: true,
+          useMaterial3: true,
           scaffoldBackgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(color: appBarColor)),
       home: ref.watch(userDataAuthProvider).when(
@@ -45,7 +45,7 @@ class MyApp extends ConsumerWidget {
             return ErrorScreen(error: err.toString());
           },
           loading: () => const CustomLoadinIndicator()),
-      onGenerateRoute: (settings) => onGenerateRoute(settings),
+      onGenerateRoute: onGenerateRoute,
     );
   }
 }

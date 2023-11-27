@@ -8,6 +8,7 @@ import 'package:chatapp/models/chat_contact.dart';
 import 'package:chatapp/models/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../models/group.dart' as model;
 
 final chatControllerProvider = Provider((ref) => ChatController(
     chatRepository: ref.watch(chatRepositoryProvider), ref: ref));
@@ -17,8 +18,8 @@ class ChatController {
   final ProviderRef ref;
 
   ChatController({required this.chatRepository, required this.ref});
-  void sendTextMessage(
-      BuildContext context, String text, String recieverUserId) async {
+  void sendTextMessage(BuildContext context, String text, String recieverUserId,
+      bool isGroupChat) async {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData((senderUser) =>
         chatRepository.sendTextMessage(
@@ -26,12 +27,13 @@ class ChatController {
             text: text,
             recieverUserId: recieverUserId,
             senderUser: senderUser!,
-            messageReply: messageReply));
+            messageReply: messageReply,
+            isGroupChat: isGroupChat));
     ref.read(messageReplyProvider.notifier).update((state) => null);
   }
 
   void sendFileMessage(BuildContext context, File file, String recieverUserId,
-      MessageEnum messageEnum) async {
+      MessageEnum messageEnum, bool isGroupChat) async {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData((senderUser) =>
         chatRepository.sendFileMessage(
@@ -41,7 +43,8 @@ class ChatController {
             senderUserData: senderUser!,
             messageEnum: messageEnum,
             ref: ref,
-            messageReply: messageReply));
+            messageReply: messageReply,
+            isGroupChat: isGroupChat));
     ref.read(messageReplyProvider.notifier).update((state) => null);
   }
 
@@ -49,8 +52,16 @@ class ChatController {
     return chatRepository.getChatContacts();
   }
 
+  Stream<List<model.Group>> groupChatContacts() {
+    return chatRepository.getGroupChatContacts();
+  }
+
   Stream<List<Message>> chatStream(String recieverUserId) {
     return chatRepository.getChatStream(recieverUserId);
+  }
+
+  Stream<List<Message>> groupChatStream(String recieverUserId) {
+    return chatRepository.getGroupChatStream(recieverUserId);
   }
 
   void setChatMessageSeen(

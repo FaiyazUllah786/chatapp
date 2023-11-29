@@ -21,7 +21,6 @@ class ContactsList extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            color: Colors.blue,
             height: 100,
             child: StreamBuilder<List<model.Group>>(
               stream: ref.watch(chatControllerProvider).groupChatContacts(),
@@ -103,7 +102,6 @@ class ContactsList extends ConsumerWidget {
             ),
           ),
           Container(
-            color: Colors.amber,
             height: 400,
             child: StreamBuilder<List<ChatContact>>(
               stream: ref.watch(chatControllerProvider).chatContacts(),
